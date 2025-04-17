@@ -1,5 +1,22 @@
 const userService = require("../services/user.service");
 
+//Login dos Usuários
+const loginUsuario = async (req, res) => {
+  const { usuario, senha } = req.body;
+
+  if (!usuario || !senha) {
+    return res.status(400).json({ mensagem: "Usuário e senha obrigatórios." });
+  }
+
+  try {
+    const loginInfo = await userService.autenticarUsuario(usuario, senha);
+    res.status(200).json(loginInfo);
+  } catch (error) {
+    console.error(error);
+    res.status(401).json({ mensagem: error.message });
+  }
+};
+
 //Rota de Criação de Usuários
 const registrarUsuario = async (req, res) => {
   try {
@@ -68,6 +85,7 @@ const deletarUsuario = async (req, res) => {
 };
 
 module.exports = {
+  loginUsuario,
   registrarUsuario,
   buscarUsuarios,
   atualizarUsuario,

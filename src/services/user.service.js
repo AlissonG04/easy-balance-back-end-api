@@ -1,5 +1,38 @@
 const db = require("../config/db");
 const bcrypt = require("bcrypt");
+const jtw = require("jsonwebtoken");
+
+//Altenticação de Usuários
+const autenticarUsuario = async (usuario, senha) => {
+  const query = `SELECT * FROM usuarios WHERE usuario = $1`;
+  const result = await db.query(query, [usuario]);
+
+  if (result.rows.length === 0) {
+    throw new Error("Usuário não encontrado.");
+  }
+
+  const user = result.rows[0];
+  const senhaConfere = await bcrypt.compare(senha, user.senha);
+
+  if (!senhaConfere) {
+    throw new Error("Senha incorreta.");
+  }
+
+  const payload = {
+    id: user.id,
+    usuario: user.usuario,
+    tipo: user.tipo,
+  };
+
+  const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "8h" });
+
+  return {
+    token,
+    usuario: user.usuario,
+    tipo: user.tipo,
+    id: user.id,
+  };
+};
 
 //Criação de Usuários
 const criarUsuario = async ({ usuario, senha, tipo }) => {
@@ -78,6 +111,7 @@ const deletarUsuario = async (id) => {
 };
 
 module.exports = {
+  autenticarUsuario,
   criarUsuario,
   listarUsuarios,
   atualizarUsuario,
