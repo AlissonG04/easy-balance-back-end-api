@@ -12,13 +12,16 @@ router.post(
   autorizarAdmin,
   userController.registrarUsuario
 );
+
 router.get("/", autenticarToken, autorizarAdmin, userController.buscarUsuarios);
+
 router.put(
   "/:id",
   autenticarToken,
   autorizarAdmin,
   userController.atualizarUsuario
 );
+
 router.delete(
   "/:id",
   autenticarToken,
@@ -27,3 +30,5 @@ router.delete(
 );
 
 router.post("/login", userController.loginUsuario); // público
+
+module.exports = router;
