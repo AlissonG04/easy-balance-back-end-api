@@ -12,7 +12,7 @@ app.use(express.json());
 
 // Rotas
 const userRoutes = require("./src/routes/user.routes");
-app.use("/api/users", userRoutes);
+app.use("/api/usuarios", userRoutes);
 
 // WebSocket
 setupWebSocket(server);
