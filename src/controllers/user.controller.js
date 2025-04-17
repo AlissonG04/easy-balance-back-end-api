@@ -1,5 +1,6 @@
 const userService = require("../services/user.service");
 
+//Rota de Criação de Usuários
 const registrarUsuario = async (req, res) => {
   try {
     const { usuario, senha, tipo } = req.body;
@@ -21,7 +22,19 @@ const registrarUsuario = async (req, res) => {
   }
 };
 
+//Buscar Usuários
+const buscarUsuarios = async (req, res) => {
+  try {
+    const usuarios = await userService.listarUsuarios();
+    res.status(200).json(usuarios);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensagem: "Erro ao buscar usuários." });
+  }
+};
+
 module.exports = {
   registrarUsuario,
+  buscarUsuarios,
   // Em breve: buscarUsuarios, atualizarUsuario, deletarUsuario
 };
