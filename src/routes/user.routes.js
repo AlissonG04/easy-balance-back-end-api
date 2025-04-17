@@ -1,13 +1,29 @@
 const express = require("express");
 const router = express.Router();
 const userController = require("../controllers/user.controller");
+const {
+  autenticarToken,
+  autorizarAdmin,
+} = require("../middlewares/auth.middleware");
 
-router.post("/registro", userController.registrarUsuario);
-router.get("/", userController.buscarUsuarios);
-router.put("/:id", userController.atualizarUsuario);
-router.delete("/:id", userController.deletarUsuario);
-router.post("/login", userController.loginUsuario);
+router.post(
+  "/registro",
+  autenticarToken,
+  autorizarAdmin,
+  userController.registrarUsuario
+);
+router.get("/", autenticarToken, autorizarAdmin, userController.buscarUsuarios);
+router.put(
+  "/:id",
+  autenticarToken,
+  autorizarAdmin,
+  userController.atualizarUsuario
+);
+router.delete(
+  "/:id",
+  autenticarToken,
+  autorizarAdmin,
+  userController.deletarUsuario
+);
 
-// Em breve: GET /, PUT /:id, DELETE /:id
-
-module.exports = router;
+router.post("/login", userController.loginUsuario); // público
