@@ -1,6 +1,6 @@
 const db = require("../config/db");
 const bcrypt = require("bcrypt");
-const jtw = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 
 //Altenticação de Usuários
 const autenticarUsuario = async (usuario, senha) => {
