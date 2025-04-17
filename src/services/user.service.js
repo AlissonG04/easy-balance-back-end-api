@@ -24,10 +24,17 @@ const autenticarUsuario = async (usuario, senha) => {
     tipo: user.tipo,
   };
 
-  const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "8h" });
+  //Tempo de expiração do Token
+  const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "15m" });
+
+  //Tempo de refreshToken
+  const refreshToken = jwt.sign(payload, process.env.JWT_SECRET, {
+    expiresIn: "7d",
+  });
 
   return {
     token,
+    refreshToken,
     usuario: user.usuario,
     tipo: user.tipo,
     id: user.id,

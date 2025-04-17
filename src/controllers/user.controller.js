@@ -17,6 +17,33 @@ const loginUsuario = async (req, res) => {
   }
 };
 
+//Refresh Token
+const refreshToken = (req, res) => {
+  const { token } = req.body;
+
+  if (!token) {
+    return res.status(401).json({ mensagem: "Refresh token não fornecido." });
+  }
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, usuario) => {
+    if (err) {
+      return res.status(403).json({ mensagem: "Refresh token inválido." });
+    }
+
+    const payload = {
+      id: usuario.id,
+      usuario: usuario.usuario,
+      tipo: usuario.tipo,
+    };
+
+    const novoToken = jwt.sign(payload, process.env.JWT_SECRET, {
+      expiresIn: "15m",
+    });
+
+    res.status(200).json({ token: novoToken });
+  });
+};
+
 //Rota de Criação de Usuários
 const registrarUsuario = async (req, res) => {
   try {

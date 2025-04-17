@@ -13,6 +13,9 @@ router.post(
   userController.registrarUsuario
 );
 
+//Refresh Token
+router.post("/refresh", userController.refreshToken);
+
 router.get("/", autenticarToken, autorizarAdmin, userController.buscarUsuarios);
 
 router.put(
@@ -29,6 +32,7 @@ router.delete(
   userController.deletarUsuario
 );
 
-router.post("/login", userController.loginUsuario); // público
+//Publico
+router.post("/login", userController.loginUsuario);
 
 module.exports = router;
