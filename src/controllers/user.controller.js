@@ -33,8 +33,43 @@ const buscarUsuarios = async (req, res) => {
   }
 };
 
+//Atualizar Usuários
+const atualizarUsuario = async (req, res) => {
+  const { id } = req.params;
+  const dados = req.body;
+
+  try {
+    const usuarioAtualizado = await userService.atualizarUsuario(id, dados);
+    res.status(200).json(usuarioAtualizado);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensagem: "Erro ao atualizar usuário." });
+  }
+};
+
+//Deleção de Usuários
+const deletarUsuario = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const usuarioRemovido = await userService.deletarUsuario(id);
+
+    if (!usuarioRemovido) {
+      return res.status(404).json({ mensagem: "Usuário não encontrado." });
+    }
+
+    res.status(200).json({
+      mensagem: `Usuário '${usuarioRemovido.usuario}' removido com sucesso.`,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensagem: "Erro ao deletar usuário." });
+  }
+};
+
 module.exports = {
   registrarUsuario,
   buscarUsuarios,
-  // Em breve: buscarUsuarios, atualizarUsuario, deletarUsuario
+  atualizarUsuario,
+  deletarUsuario,
 };
