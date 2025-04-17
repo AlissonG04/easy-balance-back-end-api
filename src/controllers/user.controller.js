@@ -112,9 +112,10 @@ const deletarUsuario = async (req, res) => {
 };
 
 module.exports = {
-  loginUsuario,
   registrarUsuario,
   buscarUsuarios,
   atualizarUsuario,
   deletarUsuario,
+  loginUsuario,
+  refreshToken,
 };
